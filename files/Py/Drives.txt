@@ -1,0 +1,10 @@
+sudo nano /etc/udev/rules.d/99-hide-disks.rules
+
+
+KERNEL=="nvme0n1p3", ENV{UDISKS_IGNORE}="1"
+KERNEL=="nvme0n1p4", ENV{UDISKS_IGNORE}="1"
+KERNEL=="nvme0n1p5", ENV{UDISKS_IGNORE}="1"
+
+
+remove the above for normal state and reload the rules using this command:
+sudo udevadm control --reload-rules && sudo udevadm trigger

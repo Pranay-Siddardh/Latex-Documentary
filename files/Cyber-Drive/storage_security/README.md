@@ -1,7 +1,0 @@
-# Storage security implementation status
-
-Personal-drive encryption is wired into the current `main.py` storage paths. New uploads are encrypted before their final filename is published; at startup, legacy regular files under `storage/` are migrated to authenticated encryption before the app starts serving requests. A migration error stops startup rather than leaving a partly migrated drive running.
-
-The personal object format uses chunked AES-256-GCM with an authenticated header, unique object identifier, and authenticated plaintext size. Downloads, PDF/media range reads, bounded code/text previews, and ZIP generation read through the decryption helpers. Office conversion and MKV subtitle extraction require `/dev/shm` and use short-lived plaintext copies only there; those preview features are disabled if secure temporary storage is unavailable. Room sharing has a separate encrypted object store and key.
-
-These are local application-level controls, not a claim that the host is safe from its root user or a compromised running process. Back up the personal key and room key separately from the encrypted data. Losing a key makes its corresponding encrypted data unrecoverable. Keep encrypted backups, protect swap and temporary storage, and use a managed KMS/HSM for stronger production key isolation. Run the test suite and live route checks in the target deployment environment before relying on the service.
